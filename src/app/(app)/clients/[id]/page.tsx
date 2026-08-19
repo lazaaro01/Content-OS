@@ -29,7 +29,8 @@ export default function ClientDetailPage() {
   const params = useParams<{ id: string }>();
   const client = useClientStore((s) => s.clients.find((c) => c.id === params.id));
   const updateClient = useClientStore((s) => s.updateClient);
-  const contents = useContentStore((s) => s.contents.filter((c) => c.clientId === params.id));
+  const allContents = useContentStore((s) => s.contents);
+  const contents = allContents.filter((c) => c.clientId === params.id);
   const { toast } = useToast();
   const [editOpen, setEditOpen] = React.useState(false);
 

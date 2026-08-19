@@ -11,7 +11,8 @@ import { getUserById, CURRENT_USER_ID, mockUsers } from "@/data/mock-users";
 import { formatRelativeDay, formatTime } from "@/lib/utils/date";
 
 export function CommentSection({ contentId }: { contentId: string }) {
-  const comments = useCommentStore((s) => s.comments.filter((c) => c.contentId === contentId));
+  const allComments = useCommentStore((s) => s.comments);
+  const comments = allComments.filter((c) => c.contentId === contentId);
   const addComment = useCommentStore((s) => s.addComment);
   const [text, setText] = React.useState("");
 

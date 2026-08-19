@@ -48,9 +48,8 @@ export default function ContentDetailPage() {
   const content = useContentStore((s) => s.contents.find((c) => c.id === params.id));
   const deleteContent = useContentStore((s) => s.deleteContent);
   const sendForApproval = useContentStore((s) => s.sendForApproval);
-  const activities = useActivityStore((s) =>
-    s.activities.filter((a) => a.contentId === params.id)
-  );
+  const allActivities = useActivityStore((s) => s.activities);
+  const activities = allActivities.filter((a) => a.contentId === params.id);
 
   const [editOpen, setEditOpen] = React.useState(false);
   const [deleteOpen, setDeleteOpen] = React.useState(false);

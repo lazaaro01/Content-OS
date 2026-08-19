@@ -34,7 +34,8 @@ export default function CampaignDetailPage() {
   const params = useParams<{ id: string }>();
   const campaign = useCampaignStore((s) => s.campaigns.find((c) => c.id === params.id));
   const updateCampaign = useCampaignStore((s) => s.updateCampaign);
-  const contents = useContentStore((s) => s.contents.filter((c) => c.campaignId === params.id));
+  const allContents = useContentStore((s) => s.contents);
+  const contents = allContents.filter((c) => c.campaignId === params.id);
   const { toast } = useToast();
   const [editOpen, setEditOpen] = React.useState(false);
 

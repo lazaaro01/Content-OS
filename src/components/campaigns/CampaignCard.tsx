@@ -22,7 +22,9 @@ const CAMPAIGN_STATUS_VARIANT: Record<Campaign["status"], "default" | "primary" 
 };
 
 export function CampaignCard({ campaign }: { campaign: Campaign }) {
-  const contents = useContentStore((s) => s.contents.filter((c) => c.campaignId === campaign.id));
+  const contentCount = useContentStore(
+    (s) => s.contents.filter((c) => c.campaignId === campaign.id).length
+  );
   const client = getClientById(campaign.clientId);
 
   return (
@@ -45,7 +47,7 @@ export function CampaignCard({ campaign }: { campaign: Campaign }) {
           <span>
             {formatDayMonth(new Date(campaign.startDate))} – {formatDayMonth(new Date(campaign.endDate))}
           </span>
-          <span>{contents.length} conteúdos</span>
+          <span>{contentCount} conteúdos</span>
         </div>
       </Card>
     </Link>

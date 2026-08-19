@@ -9,7 +9,8 @@ import { PLATFORM_CONFIG } from "@/lib/constants/platforms";
 import type { Client } from "@/types";
 
 export function ClientCard({ client }: { client: Client }) {
-  const contents = useContentStore((s) => s.contents.filter((c) => c.clientId === client.id));
+  const allContents = useContentStore((s) => s.contents);
+  const contents = allContents.filter((c) => c.clientId === client.id);
   const published = contents.filter((c) => c.status === "PUBLICADO").length;
   const pending = contents.length - published;
 
