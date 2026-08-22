@@ -421,6 +421,7 @@ function buildContent(raw: RawContent, index: number): Content {
     hashtags: raw.hashtags ?? buildHashtags(raw.clientId, raw.platform),
     cta: CTA_POOL[raw.format],
     thumbnailSeed: `${raw.clientId}-${index}`,
+    driveFile: null,
     createdAt: at(createdOffset, 9, 0),
     updatedAt: isPastStatus ? at(raw.dayOffset - 1, 16, 0) : at(createdOffset, 9, 0),
   };

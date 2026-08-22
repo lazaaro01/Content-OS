@@ -44,7 +44,13 @@ export function CalendarCard({ content, compact }: { content: Content; compact?:
         isDragging && "opacity-40"
       )}
     >
-      <ContentThumbnail seed={content.thumbnailSeed} format={content.format} platform={content.platform} className="aspect-[4/3] rounded-none" />
+      <ContentThumbnail
+        seed={content.thumbnailSeed}
+        format={content.format}
+        platform={content.platform}
+        imageUrl={content.driveFile?.thumbnailLink}
+        className="aspect-[4/3] rounded-none"
+      />
       <div className="flex flex-col gap-1.5 p-2.5">
         <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
           {FORMAT_LABELS[content.format]}

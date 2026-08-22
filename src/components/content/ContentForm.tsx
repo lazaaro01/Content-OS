@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
+import { GoogleDrivePickerButton } from "@/components/content/GoogleDrivePickerButton";
 import { useClientStore } from "@/store/client-store";
 import { useCampaignStore } from "@/store/campaign-store";
 import { mockUsers } from "@/data/mock-users";
@@ -19,10 +20,10 @@ import { STATUS_CONFIG, STATUS_ORDER } from "@/lib/constants/status";
 import { toDateInputValue } from "@/lib/utils/date";
 import { PLATFORMS, FORMATS } from "@/types";
 import type { ContentInput } from "@/store/content-store";
-import type { Content } from "@/types";
+import type { Content, DriveFile } from "@/types";
 
 export interface ContentFormProps {
-  initial?: Content;
+  initial?: Partial<Content>;
   onSubmit: (input: ContentInput) => void;
   onCancel?: () => void;
   submitLabel?: string;
@@ -40,12 +41,13 @@ export function ContentForm({ initial, onSubmit, onCancel, submitLabel = "Salvar
   const [status, setStatus] = React.useState(initial?.status ?? "IDEIA");
   const [assigneeId, setAssigneeId] = React.useState(initial?.assigneeId ?? mockUsers[0].id);
   const [scheduledAt, setScheduledAt] = React.useState(
-    toDateInputValue(initial ? new Date(initial.scheduledAt) : new Date())
+    toDateInputValue(initial?.scheduledAt ? new Date(initial.scheduledAt) : new Date())
   );
   const [script, setScript] = React.useState(initial?.script ?? "");
   const [caption, setCaption] = React.useState(initial?.caption ?? "");
   const [hashtags, setHashtags] = React.useState((initial?.hashtags ?? []).join(", "));
   const [cta, setCta] = React.useState(initial?.cta ?? "");
+  const [driveFile, setDriveFile] = React.useState<DriveFile | null>(initial?.driveFile ?? null);
 
   const clientCampaigns = campaigns.filter((c) => c.clientId === clientId);
 
@@ -71,6 +73,7 @@ export function ContentForm({ initial, onSubmit, onCancel, submitLabel = "Salvar
         .filter(Boolean)
         .map((h) => (h.startsWith("#") ? h : `#${h}`)),
       cta,
+      driveFile,
     });
   }
 
@@ -205,6 +208,20 @@ export function ContentForm({ initial, onSubmit, onCancel, submitLabel = "Salvar
         placeholder="Legenda que vai na publicação..."
         rows={2}
       />
+
+      <div className="flex flex-col gap-1.5">
+        <label className="text-xs font-medium text-muted-foreground">Mídia</label>
+        {driveFile ? (
+          <div className="flex items-center justify-between gap-3 rounded-sm border border-border bg-surface-elevated px-3 py-2">
+            <span className="truncate text-sm text-foreground">{driveFile.name}</span>
+            <Button type="button" variant="ghost" size="sm" onClick={() => setDriveFile(null)}>
+              Remover
+            </Button>
+          </div>
+        ) : (
+          <GoogleDrivePickerButton onSelect={setDriveFile} />
+        )}
+      </div>
 
       <div className="grid grid-cols-2 gap-3">
         <Input

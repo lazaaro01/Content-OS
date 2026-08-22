@@ -21,6 +21,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { StatusBadge } from "@/components/content/StatusBadge";
 import { ContentThumbnail } from "@/components/content/ContentThumbnail";
 import { EditContentModal } from "@/components/content/EditContentModal";
+import { GoogleDrivePickerButton } from "@/components/content/GoogleDrivePickerButton";
 import { CommentSection } from "@/components/comments/CommentSection";
 import {
   Modal,
@@ -48,6 +49,7 @@ export default function ContentDetailPage() {
   const content = useContentStore((s) => s.contents.find((c) => c.id === params.id));
   const deleteContent = useContentStore((s) => s.deleteContent);
   const sendForApproval = useContentStore((s) => s.sendForApproval);
+  const updateContent = useContentStore((s) => s.updateContent);
   const allActivities = useActivityStore((s) => s.activities);
   const activities = allActivities.filter((a) => a.contentId === params.id);
 
@@ -91,6 +93,17 @@ export default function ContentDetailPage() {
       description: "Aguardando aprovação do cliente.",
       variant: "success",
     });
+  }
+
+  function handleDriveFileSelected(driveFile: NonNullable<typeof content>["driveFile"]) {
+    if (!content) return;
+    updateContent(content.id, { driveFile });
+    toast({ title: "Mídia atualizada", description: driveFile?.name, variant: "success" });
+  }
+
+  function handleRemoveDriveFile() {
+    if (!content) return;
+    updateContent(content.id, { driveFile: null });
   }
 
   return (
@@ -138,14 +151,33 @@ export default function ContentDetailPage() {
             <CardHeader>
               <CardTitle>Mídia</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex flex-col gap-3">
               <div className="max-w-xs">
                 <ContentThumbnail
                   seed={content.thumbnailSeed}
                   format={content.format}
                   platform={content.platform}
+                  imageUrl={content.driveFile?.thumbnailLink}
                 />
               </div>
+
+              {content.driveFile ? (
+                <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-surface-elevated px-3 py-2">
+                  <a
+                    href={content.driveFile.webViewLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="truncate text-sm text-foreground hover:text-primary"
+                  >
+                    {content.driveFile.name}
+                  </a>
+                  <Button variant="ghost" size="sm" onClick={handleRemoveDriveFile}>
+                    Remover
+                  </Button>
+                </div>
+              ) : (
+                <GoogleDrivePickerButton onSelect={handleDriveFileSelected} />
+              )}
             </CardContent>
           </Card>
 

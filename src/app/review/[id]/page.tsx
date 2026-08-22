@@ -94,6 +94,7 @@ export default function ReviewPage() {
                   seed={content.thumbnailSeed}
                   format={content.format}
                   platform={content.platform}
+                  imageUrl={content.driveFile?.thumbnailLink}
                 />
               </div>
 

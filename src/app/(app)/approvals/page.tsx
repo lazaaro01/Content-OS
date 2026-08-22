@@ -46,6 +46,7 @@ export default function ApprovalsPage() {
                     seed={content.thumbnailSeed}
                     format={content.format}
                     platform={content.platform}
+                    imageUrl={content.driveFile?.thumbnailLink}
                   />
                 </div>
                 <div className="flex flex-1 flex-col gap-2 p-4 pt-1">

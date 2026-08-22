@@ -35,8 +35,8 @@ npm run lint    # eslint
 ## Funcionalidades
 
 - **Dashboard** — resumo do que está acontecendo: conteúdos em produção, aguardando aprovação, agendados e publicados; conteúdos recentes; aprovações pendentes; próximos conteúdos (Hoje/Amanhã); feed de atividades.
-- **Content** — listagem em grid, lista ou Kanban, com busca e filtros combináveis (cliente, plataforma, status, campanha, responsável). Criação, edição, exclusão e página de detalhe (roteiro, legenda, hashtags, CTA, mídia, comentários e histórico).
-- **Calendar** — visualização por mês, semana ou dia, com drag & drop para reagendar conteúdos.
+- **Content** — listagem em grid, lista ou Kanban, com busca e filtros combináveis (cliente, plataforma, status, campanha, responsável). Criação, edição, exclusão e página de detalhe (roteiro, legenda, hashtags, CTA, mídia, comentários e histórico). A mídia pode ser escolhida diretamente do Google Drive (opcional — veja abaixo).
+- **Calendar** — visualização por mês, semana ou dia, com drag & drop para reagendar conteúdos. Na visualização de mês, é possível exportar o calendário (respeitando os filtros ativos) como imagem PNG ou PDF, pronto para compartilhar com clientes.
 - **Kanban** — board com as 7 etapas do fluxo editorial (Ideia → Roteiro → Produção → Edição → Aprovação → Agendado → Publicado), com drag & drop entre colunas.
 - **Approvals** — fila de conteúdos aguardando aprovação e página de revisão (`/review/[id]`) para aprovar ou solicitar alteração.
 - **Clients** e **Campaigns** — cadastro e gestão, com os conteúdos relacionados a cada um.
@@ -57,6 +57,7 @@ src/
 │   │   ├── approvals/
 │   │   └── settings/
 │   ├── review/[id]/        # página de aprovação, sem sidebar
+│   ├── api/parse-task/      # rota server-side que chama a IA (única exceção "backend")
 │   └── page.tsx            # landing page
 │
 ├── components/
@@ -69,8 +70,9 @@ src/
 ├── lib/
 │   ├── storage/             # adapter único de localStorage usado pelos stores
 │   ├── constants/            # status e plataformas (labels, ícones, cores)
+│   ├── google-drive/          # config, loader de scripts e tipos do Drive Picker
 │   └── utils/                 # cn, datas, ids, texto, gradientes
-├── hooks/                    # useLocalStorage (preferências de UI)
+├── hooks/                    # useLocalStorage, useGoogleDrivePicker, useSpeechRecognition
 └── types/                     # tipos e enums do domínio
 ```
 
@@ -79,5 +81,54 @@ src/
 Cada entidade (conteúdos, clientes, campanhas, comentários, atividades, configurações) tem seu próprio store Zustand com `persist`, gravando em uma chave própria do `localStorage` (`content-os-*`). Todo o acesso ao `localStorage` passa por um único adapter em `src/lib/storage/local-storage.ts` — se no futuro isso virar uma API real, só esse arquivo precisa mudar.
 
 Os dados iniciais vêm de `src/data/mock-*.ts`. Na primeira visita, os stores usam esses mocks; a partir da primeira alteração, tudo passa a ser lido/gravado do `localStorage`, sobrevivendo a refresh da página.
+
+## Integração com Google Drive (opcional)
+
+Ao criar/editar um conteúdo (ou na página de detalhe), é possível anexar como mídia um arquivo escolhido diretamente do seu Google Drive, em vez do thumbnail gerado. A integração roda inteiramente no navegador — não usa nem precisa de backend.
+
+**1. Crie um projeto no [Google Cloud Console](https://console.cloud.google.com/):**
+
+1. Crie um projeto (ou use um existente) e ative a **Google Picker API** e a **Google Drive API** em "APIs e serviços".
+2. Em "Tela de consentimento OAuth", configure como app **externo** em modo de teste (não precisa de verificação, já que usamos o escopo `drive.file` — a aplicação só acessa os arquivos que você escolher explicitamente no seletor).
+3. Em "Credenciais", crie:
+   - uma **Chave de API** (API key) — pode restringir por domínio (`localhost` para desenvolvimento);
+   - um **ID do cliente OAuth 2.0** do tipo "Aplicativo da Web", com `http://localhost:3000` em "Origens JavaScript autorizadas".
+
+**2. Configure as variáveis de ambiente:**
+
+```bash
+cp .env.local.example .env.local
+```
+
+Preencha `.env.local`:
+
+```bash
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=seu-client-id.apps.googleusercontent.com
+NEXT_PUBLIC_GOOGLE_API_KEY=sua-api-key
+```
+
+`.env.local` nunca é commitado (já está no `.gitignore`).
+
+**3. Reinicie o `npm run dev`.** O botão "Escolher do Google Drive" aparece no formulário de conteúdo e na página de detalhe. Sem essas variáveis configuradas, o botão avisa que a integração não está configurada, mas o resto do app funciona normalmente.
+
+**Limitação conhecida:** o token de acesso obtido no navegador expira em ~1h e, sem backend, não há refresh token seguro — pode ser necessário reconectar a conta Google de tempos em tempos.
+
+## Criar conteúdo por voz (opcional)
+
+O botão **"Criar por voz"** na barra superior grava sua fala (Web Speech API do navegador — funciona no Chrome/Edge; outros navegadores caem no modo de digitar o texto manualmente), envia a transcrição para uma IA (Claude) extrair título, cliente, plataforma, formato e data, e pré-preenche o formulário de criação de conteúdo para você revisar antes de salvar.
+
+**1. Gere uma API key da Anthropic** em [console.anthropic.com](https://console.anthropic.com/settings/keys).
+
+**2. Configure `.env.local`:**
+
+```bash
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+Sem o prefixo `NEXT_PUBLIC_` — essa chave é usada **apenas no servidor**, dentro da rota `src/app/api/parse-task/route.ts`, e nunca chega ao navegador.
+
+**3. Reinicie o `npm run dev`.** Sem essa variável configurada, o botão "Criar por voz" avisa que a integração não está configurada; o restante do app continua funcionando normalmente.
+
+A extração usa [Structured Outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) da API da Claude (schema validado com Zod), então o retorno já vem no formato certo — sem parsing manual de texto livre.
 
 Feito por [Lázaro Vasconcelos](mailto:lazaro.vasconcelos@sollydus.com.br).

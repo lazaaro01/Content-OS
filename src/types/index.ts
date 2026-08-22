@@ -71,6 +71,15 @@ export interface Campaign {
   status: CampaignStatus;
 }
 
+export interface DriveFile {
+  id: string;
+  name: string;
+  mimeType: string;
+  iconLink?: string;
+  thumbnailLink?: string;
+  webViewLink?: string;
+}
+
 export interface Content {
   id: string;
   title: string;
@@ -87,6 +96,7 @@ export interface Content {
   hashtags: string[];
   cta: string;
   thumbnailSeed: string;
+  driveFile: DriveFile | null;
   createdAt: string;
   updatedAt: string;
 }

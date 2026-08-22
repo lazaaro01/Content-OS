@@ -52,6 +52,7 @@ export function RecentContent() {
                   seed={content.thumbnailSeed}
                   format={content.format}
                   platform={content.platform}
+                  imageUrl={content.driveFile?.thumbnailLink}
                   className="aspect-square"
                 />
               </div>

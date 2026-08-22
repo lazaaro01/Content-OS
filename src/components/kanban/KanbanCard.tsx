@@ -44,6 +44,7 @@ export function KanbanCard({ content, dragging }: { content: Content; dragging?:
           seed={content.thumbnailSeed}
           format={content.format}
           platform={content.platform}
+          imageUrl={content.driveFile?.thumbnailLink}
           className="aspect-square"
         />
       </Link>
