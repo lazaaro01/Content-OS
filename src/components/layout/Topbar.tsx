@@ -28,15 +28,20 @@ export function Topbar() {
 
       <div className="flex-1" />
 
-      <Button size="sm" variant="outline" onClick={() => setVoiceOpen(true)} className="hidden sm:inline-flex">
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={() => setVoiceOpen(true)}
+        aria-label="Criar por voz"
+      >
         <Mic className="size-4" />
-        Criar por voz
+        <span className="hidden sm:inline">Criar por voz</span>
       </Button>
 
-      <Button asChild size="sm" variant="secondary" className="hidden sm:inline-flex">
-        <Link href="/content?create=1">
+      <Button asChild size="sm" variant="secondary">
+        <Link href="/content?create=1" aria-label="Novo conteúdo">
           <Plus className="size-4" />
-          Novo conteúdo
+          <span className="hidden sm:inline">Novo conteúdo</span>
         </Link>
       </Button>
 
