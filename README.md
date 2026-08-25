@@ -115,20 +115,20 @@ NEXT_PUBLIC_GOOGLE_API_KEY=sua-api-key
 
 ## Criar conteúdo por voz (opcional)
 
-O botão **"Criar por voz"** na barra superior grava sua fala (Web Speech API do navegador — funciona no Chrome/Edge; outros navegadores caem no modo de digitar o texto manualmente), envia a transcrição para uma IA (Claude) extrair título, cliente, plataforma, formato e data, e pré-preenche o formulário de criação de conteúdo para você revisar antes de salvar.
+O botão **"Criar por voz"** na barra superior grava sua fala (Web Speech API do navegador — funciona no Chrome/Edge; outros navegadores caem no modo de digitar o texto manualmente), envia a transcrição para uma IA (GROQ) extrair título, cliente, plataforma, formato e data, e pré-preenche o formulário de criação de conteúdo para você revisar antes de salvar.
 
-**1. Gere uma API key da Anthropic** em [console.anthropic.com](https://console.anthropic.com/settings/keys).
+**1. Gere uma API key do GROQ** em [console.groq.com](https://console.groq.com/keys).
 
 **2. Configure `.env.local`:**
 
 ```bash
-ANTHROPIC_API_KEY=sk-ant-...
+GROQ_API_KEY=gsk_...
 ```
 
 Sem o prefixo `NEXT_PUBLIC_` — essa chave é usada **apenas no servidor**, dentro da rota `src/app/api/parse-task/route.ts`, e nunca chega ao navegador.
 
 **3. Reinicie o `npm run dev`.** Sem essa variável configurada, o botão "Criar por voz" avisa que a integração não está configurada; o restante do app continua funcionando normalmente.
 
-A extração usa [Structured Outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) da API da Claude (schema validado com Zod), então o retorno já vem no formato certo — sem parsing manual de texto livre.
+A extração usa JSON Schema via GROQ (`openai/gpt-oss-120b`) com validação Zod no servidor, então o retorno já vem no formato certo — sem parsing manual de texto livre.
 
 Feito por [Lázaro Vasconcelos](mailto:lazaro.vasconcelos@sollydus.com.br).
