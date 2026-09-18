@@ -39,7 +39,7 @@ export default function LoginPage() {
       toast({
         title: "Falha no login",
         description: result.error ?? "E-mail ou senha incorretos.",
-        variant: "danger",
+        variant: "error",
       });
       setIsLoading(false);
       return;

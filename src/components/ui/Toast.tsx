@@ -6,7 +6,7 @@ import { CheckCircle2, AlertCircle, Info, X } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { generateId } from "@/lib/utils/id";
 
-type ToastVariant = "success" | "error" | "info";
+export type ToastVariant = "success" | "error" | "danger" | "info";
 
 interface ToastItem {
   id: string;
@@ -24,12 +24,14 @@ const ToastContext = React.createContext<ToastContextValue | null>(null);
 const VARIANT_ICON: Record<ToastVariant, React.ElementType> = {
   success: CheckCircle2,
   error: AlertCircle,
+  danger: AlertCircle,
   info: Info,
 };
 
 const VARIANT_COLOR: Record<ToastVariant, string> = {
   success: "text-success",
   error: "text-danger",
+  danger: "text-danger",
   info: "text-primary",
 };
 

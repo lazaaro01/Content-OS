@@ -63,7 +63,7 @@ export default function RegisterPage() {
         toast({
           title: "Erro no cadastro",
           description: result.error,
-          variant: "danger",
+          variant: "error",
         });
         setIsLoading(false);
         return;
@@ -80,7 +80,7 @@ export default function RegisterPage() {
       toast({
         title: "Erro inesperado",
         description: "Não foi possível concluir o cadastro.",
-        variant: "danger",
+        variant: "error",
       });
       setIsLoading(false);
     }
