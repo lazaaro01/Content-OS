@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Plus, Mic } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Plus, Mic, LogOut } from "lucide-react";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
@@ -16,11 +17,26 @@ import {
 } from "@/components/ui/Dropdown";
 import { VoiceTaskModal } from "@/components/content/VoiceTaskModal";
 import { useSettingsStore } from "@/store/settings-store";
+import { useAuthStore } from "@/store/auth-store";
+import { useToast } from "@/components/ui/Toast";
 import { getInitials } from "@/lib/utils/text";
 
 export function Topbar() {
+  const router = useRouter();
+  const { toast } = useToast();
   const settings = useSettingsStore((s) => s.settings);
+  const logout = useAuthStore((s) => s.logout);
   const [voiceOpen, setVoiceOpen] = React.useState(false);
+
+  function handleLogout() {
+    logout();
+    toast({
+      title: "Sessão encerrada",
+      description: "Você saiu da sua conta.",
+      variant: "info",
+    });
+    router.push("/login");
+  }
 
   return (
     <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-md md:px-6">
@@ -63,6 +79,14 @@ export function Topbar() {
           </DropdownItem>
           <DropdownItem asChild>
             <Link href="/">Ver landing page</Link>
+          </DropdownItem>
+          <DropdownSeparator />
+          <DropdownItem
+            onClick={handleLogout}
+            className="cursor-pointer text-danger focus:bg-danger/10 focus:text-danger gap-2"
+          >
+            <LogOut className="size-4" />
+            Sair da conta
           </DropdownItem>
         </DropdownContent>
       </Dropdown>

@@ -13,7 +13,7 @@ export function CTASection() {
           Pare de gerenciar conteúdo em ferramentas diferentes.
         </h2>
         <Button asChild size="lg">
-          <Link href="/dashboard">
+          <Link href="/register">
             Começar gratuitamente <ArrowRight className="size-4" />
           </Link>
         </Button>

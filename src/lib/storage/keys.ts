@@ -5,4 +5,6 @@ export const STORAGE_KEYS = {
   comments: "content-os-comments",
   activities: "content-os-activities",
   settings: "content-os-settings",
+  auth: "content-os-auth",
+  users: "content-os-users",
 } as const;

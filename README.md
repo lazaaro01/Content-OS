@@ -34,6 +34,7 @@ npm run lint    # eslint
 
 ## Funcionalidades
 
+- **Autenticação & Cadastro** — tela de cadastro (`/register`) para criação de novos workspaces/usuários e tela de login (`/login`) com atalho para modo de demonstração. Persistência de sessão no `localStorage`, proteção de rotas com `AuthGuard` e botão de logout ("Sair da conta") na barra superior e no menu móvel.
 - **Dashboard** — resumo do que está acontecendo: conteúdos em produção, aguardando aprovação, agendados e publicados; conteúdos recentes; aprovações pendentes; próximos conteúdos (Hoje/Amanhã); feed de atividades.
 - **Content** — listagem em grid, lista ou Kanban, com busca e filtros combináveis (cliente, plataforma, status, campanha, responsável). Criação, edição, exclusão e página de detalhe (roteiro, legenda, hashtags, CTA, mídia, comentários e histórico). A mídia pode ser escolhida diretamente do Google Drive (opcional — veja abaixo).
 - **Calendar** — visualização por mês, semana ou dia, com drag & drop para reagendar conteúdos. Na visualização de mês, é possível exportar o calendário (respeitando os filtros ativos) como imagem PNG ou PDF, pronto para compartilhar com clientes.
@@ -48,7 +49,7 @@ npm run lint    # eslint
 ```
 src/
 ├── app/                    # rotas (App Router)
-│   ├── (app)/              # aplicação autenticada: sidebar + topbar
+│   ├── (app)/              # aplicação protegida por AuthGuard: sidebar + topbar
 │   │   ├── dashboard/
 │   │   ├── calendar/
 │   │   ├── content/[id]?/
@@ -56,17 +57,19 @@ src/
 │   │   ├── clients/[id]?/
 │   │   ├── approvals/
 │   │   └── settings/
+│   ├── register/           # página de cadastro de novos usuários/workspaces
+│   ├── login/              # página de login com credenciais locais ou modo demonstração
 │   ├── review/[id]/        # página de aprovação, sem sidebar
 │   ├── api/parse-task/      # rota server-side que chama a IA (única exceção "backend")
 │   └── page.tsx            # landing page
 │
 ├── components/
 │   ├── ui/                 # Design System (Button, Badge, Modal, Toast, ...)
-│   ├── layout/              # Sidebar, Topbar, MobileNav, PageHeader
+│   ├── layout/              # Sidebar, Topbar, MobileNav, PageHeader, AuthGuard
 │   ├── content/, calendar/, kanban/, dashboard/, clients/, campaigns/, comments/, marketing/
 │
 ├── data/                    # mock data (usuários, clientes, campanhas, conteúdos...)
-├── store/                   # stores Zustand (um por entidade, com persist)
+├── store/                   # stores Zustand (auth, content, client, campaign, comment, activity, settings)
 ├── lib/
 │   ├── storage/             # adapter único de localStorage usado pelos stores
 │   ├── constants/            # status e plataformas (labels, ícones, cores)
@@ -78,7 +81,7 @@ src/
 
 ### Persistência
 
-Cada entidade (conteúdos, clientes, campanhas, comentários, atividades, configurações) tem seu próprio store Zustand com `persist`, gravando em uma chave própria do `localStorage` (`content-os-*`). Todo o acesso ao `localStorage` passa por um único adapter em `src/lib/storage/local-storage.ts` — se no futuro isso virar uma API real, só esse arquivo precisa mudar.
+Cada entidade (autenticação/sessão, conteúdos, clientes, campanhas, comentários, atividades, configurações) tem seu próprio store Zustand com `persist`, gravando em uma chave própria do `localStorage` (`content-os-*`). Todo o acesso ao `localStorage` passa por um único adapter em `src/lib/storage/local-storage.ts` — se no futuro isso virar uma API real, só esse arquivo precisa mudar.
 
 Os dados iniciais vêm de `src/data/mock-*.ts`. Na primeira visita, os stores usam esses mocks; a partir da primeira alteração, tudo passa a ser lido/gravado do `localStorage`, sobrevivendo a refresh da página.
 

@@ -143,3 +143,20 @@ export interface WorkspaceSettings {
   dateFormat: DateFormatPreference;
   weekStart: WeekStart;
 }
+
+export interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+  password?: string;
+  workspaceName: string;
+  createdAt: string;
+}
+
+export interface RegisterInput {
+  name: string;
+  workspaceName: string;
+  email: string;
+  password: string;
+}
+

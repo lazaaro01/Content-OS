@@ -15,10 +15,10 @@ export function MarketingHeader() {
       </div>
       <div className="flex items-center gap-2">
         <Button asChild variant="ghost" size="sm">
-          <Link href="/dashboard">Entrar</Link>
+          <Link href="/login">Entrar</Link>
         </Button>
         <Button asChild size="sm">
-          <Link href="/dashboard">Começar gratuitamente</Link>
+          <Link href="/register">Começar gratuitamente</Link>
         </Button>
       </div>
     </header>
