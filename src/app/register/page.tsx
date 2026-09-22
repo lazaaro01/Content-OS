@@ -4,10 +4,11 @@ import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Logo } from "@/components/ui/Logo";
 import { useToast } from "@/components/ui/Toast";
 import { useAuthStore } from "@/store/auth-store";
 
@@ -100,10 +101,8 @@ export default function RegisterPage() {
             <ArrowLeft className="size-3.5" />
             Voltar para o início
           </Link>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <div className="flex size-5 items-center justify-center rounded-xs bg-primary text-white">
-              <Sparkles className="size-3" />
-            </div>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <Logo size={24} className="size-6" />
             <span className="font-semibold text-foreground">Content OS</span>
           </div>
         </div>

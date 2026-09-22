@@ -4,9 +4,10 @@ import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Check, RotateCcw, FileText } from "lucide-react";
+import { Check, RotateCcw, FileText } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { Logo } from "@/components/ui/Logo";
 import { StatusBadge } from "@/components/content/StatusBadge";
 import { ContentThumbnail } from "@/components/content/ContentThumbnail";
 import { CommentSection } from "@/components/comments/CommentSection";
@@ -50,10 +51,8 @@ export default function ReviewPage() {
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-8 px-4 py-10">
-      <div className="flex items-center gap-2">
-        <div className="flex size-7 items-center justify-center rounded-sm bg-primary text-white">
-          <Sparkles className="size-4" />
-        </div>
+      <div className="flex items-center gap-2.5">
+        <Logo size={28} className="size-7" />
         <span className="text-sm font-semibold text-foreground">Content OS</span>
         <span className="text-sm text-muted-foreground">· Revisão de conteúdo</span>
       </div>

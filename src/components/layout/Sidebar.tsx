@@ -12,11 +12,11 @@ import {
   Settings,
   ChevronsLeft,
   ChevronsRight,
-  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/Tooltip";
+import { Logo } from "@/components/ui/Logo";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -40,10 +40,8 @@ export function Sidebar() {
           collapsed ? "w-16" : "w-56"
         )}
       >
-        <div className="flex h-14 items-center gap-2 border-b border-border px-4">
-          <div className="flex size-7 shrink-0 items-center justify-center rounded-sm bg-primary text-white">
-            <Sparkles className="size-4" />
-          </div>
+        <div className="flex h-14 items-center gap-2.5 border-b border-border px-4">
+          <Logo size={32} className="size-8" priority />
           {!collapsed && (
             <span className="text-sm font-semibold text-foreground">Content OS</span>
           )}

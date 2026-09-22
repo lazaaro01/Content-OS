@@ -14,11 +14,11 @@ import {
   Users,
   CheckSquare,
   Settings,
-  Sparkles,
   LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { Avatar } from "@/components/ui/Avatar";
+import { Logo } from "@/components/ui/Logo";
 import { useAuthStore } from "@/store/auth-store";
 import { useSettingsStore } from "@/store/settings-store";
 import { useToast } from "@/components/ui/Toast";
@@ -75,9 +75,7 @@ export function MobileNav() {
           <div>
             <div className="flex h-11 items-center justify-between px-2">
               <div className="flex items-center gap-2">
-                <div className="flex size-7 items-center justify-center rounded-sm bg-primary text-white">
-                  <Sparkles className="size-4" />
-                </div>
+                <Logo size={32} className="size-8" />
                 <DialogPrimitive.Title className="text-sm font-semibold text-foreground">
                   Content OS
                 </DialogPrimitive.Title>

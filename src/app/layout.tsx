@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   title: "Content OS — Seu conteúdo, organizado do início ao fim",
   description:
     "Plataforma de organização e gestão de conteúdo para Social Medias, freelancers e pequenas agências.",
+  icons: {
+    icon: "/midialogo.png",
+    shortcut: "/midialogo.png",
+    apple: "/midialogo.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
