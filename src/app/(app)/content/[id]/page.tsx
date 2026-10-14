@@ -139,7 +139,7 @@ export default function ContentDetailPage() {
           <Button variant="outline" size="sm" onClick={() => setEditOpen(true)}>
             <Pencil className="size-3.5" /> Editar
           </Button>
-          <Button variant="ghost" size="icon" onClick={() => setDeleteOpen(true)}>
+          <Button variant="ghost" size="icon" onClick={() => setDeleteOpen(true)} aria-label="Excluir conteúdo">
             <Trash2 className="size-4 text-danger" />
           </Button>
         </div>
@@ -167,7 +167,7 @@ export default function ContentDetailPage() {
                     href={content.driveFile.webViewLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="truncate text-sm text-foreground hover:text-primary"
+                    className="truncate text-sm text-foreground hover:text-primary-text"
                   >
                     {content.driveFile.name}
                   </a>
@@ -225,7 +225,7 @@ export default function ContentDetailPage() {
             <CardContent className="flex flex-col gap-3 text-sm">
               <InfoRow label="Cliente">
                 {client && (
-                  <Link href={`/clients/${client.id}`} className="flex items-center gap-2 hover:text-primary">
+                  <Link href={`/clients/${client.id}`} className="flex items-center gap-2 hover:text-primary-text">
                     <Avatar initials={client.avatarInitials} color={client.avatarColor} size="xs" />
                     {client.name}
                   </Link>
@@ -233,7 +233,7 @@ export default function ContentDetailPage() {
               </InfoRow>
               <InfoRow label="Campanha">
                 {campaign ? (
-                  <Link href={`/campaigns/${campaign.id}`} className="hover:text-primary">
+                  <Link href={`/campaigns/${campaign.id}`} className="hover:text-primary-text">
                     {campaign.name}
                   </Link>
                 ) : (
