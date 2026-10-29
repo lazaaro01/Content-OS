@@ -1,4 +1,5 @@
 import { MarketingHeader } from "@/components/marketing/MarketingHeader";
+import { MarketingBackground } from "@/components/marketing/MarketingBackground";
 import { Hero } from "@/components/marketing/Hero";
 import { ProblemSection } from "@/components/marketing/ProblemSection";
 import { SolutionSection } from "@/components/marketing/SolutionSection";
@@ -12,7 +13,8 @@ import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 
 export default function Home() {
   return (
-    <div className="flex min-h-svh flex-col">
+    <div className="relative isolate flex min-h-svh flex-col">
+      <MarketingBackground />
       <MarketingHeader />
       <main className="flex-1">
         <Hero />

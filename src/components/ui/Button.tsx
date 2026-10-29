@@ -13,6 +13,8 @@ export const buttonVariants = cva(
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary-hover active:bg-primary",
         secondary:
           "bg-surface-elevated text-foreground border border-border hover:bg-hover",
+        brand:
+          "bg-(image:--gradient-brand) text-primary-foreground font-semibold shadow-sm hover:brightness-110 active:brightness-95",
         ghost: "text-foreground hover:bg-hover",
         outline: "border border-border text-foreground hover:bg-hover",
         destructive: "bg-danger-solid text-danger-foreground hover:bg-danger-solid/90",

@@ -98,6 +98,9 @@
 
 :root {
   color-scheme: dark;
+  /* Gradiente de marca (botoes e barras da landing). Nao e --color-*: e uma imagem, igual nos dois temas. */
+  --gradient-brand: linear-gradient(90deg, #7c4dff 0%, #3b6ef0 100%);
+  --gradient-brand-vertical: linear-gradient(180deg, #7c4dff 0%, #3b6ef0 100%);
 }
 [data-theme="dark"] {
   color-scheme: dark;
@@ -224,3 +227,29 @@ body {
 .radix-slide-left[data-state="closed"] {
   animation: slide-out-left 0.15s ease-in;
 }
+
+/* Linhas onduladas do fundo da landing: deriva lenta e suave (desligada por prefers-reduced-motion acima). */
+@keyframes wave-drift-a {
+  from { transform: translate3d(-50px, -14px, 0) scaleY(1); }
+  to { transform: translate3d(50px, 18px, 0) scaleY(1.18); }
+}
+@keyframes wave-drift-b {
+  from { transform: translate3d(60px, 12px, 0) scaleY(1.1); }
+  to { transform: translate3d(-60px, -16px, 0) scaleY(0.88); }
+}
+@keyframes wave-drift-c {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-40px, -26px, 0) scale(1.06); }
+}
+
+.wave-line {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  will-change: transform;
+}
+.wave-line-a { animation-name: wave-drift-a; animation-duration: 10.5s; }
+.wave-line-b { animation-name: wave-drift-b; animation-duration: 14s; }
+.wave-line-c { animation-name: wave-drift-c; animation-duration: 17s; }
