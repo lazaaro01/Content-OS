@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Avatar } from "@/components/ui/Avatar";
 import { StatusBadge } from "@/components/content/StatusBadge";
 import { ContentThumbnail } from "@/components/content/ContentThumbnail";
+import { AssistedPublishCard } from "@/components/content/AssistedPublishCard";
 import { EditContentModal } from "@/components/content/EditContentModal";
 import { GoogleDrivePickerButton } from "@/components/content/GoogleDrivePickerButton";
 import { CommentSection } from "@/components/comments/CommentSection";
@@ -39,6 +40,7 @@ import { getClientById } from "@/data/mock-clients";
 import { getCampaignById } from "@/data/mock-campaigns";
 import { getUserById } from "@/data/mock-users";
 import { PLATFORM_CONFIG, FORMAT_LABELS } from "@/lib/constants/platforms";
+import { getMediaForFormat } from "@/lib/utils/media";
 import { formatFullDate, formatTime, formatRelativeTime } from "@/lib/utils/date";
 
 export default function ContentDetailPage() {
@@ -77,6 +79,7 @@ export default function ContentDetailPage() {
   const campaign = getCampaignById(content.campaignId);
   const assignee = getUserById(content.assigneeId);
   const PlatformIcon = PLATFORM_CONFIG[content.platform].icon;
+  const formatMedia = getMediaForFormat(content.format);
 
   function handleDelete() {
     if (!content) return;
@@ -147,9 +150,12 @@ export default function ContentDetailPage() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="flex flex-col gap-6 lg:col-span-2">
+          <AssistedPublishCard content={content} />
+
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between gap-2">
               <CardTitle>Mídia</CardTitle>
+              <Badge variant="outline">{formatMedia.label}</Badge>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
               <div className="max-w-xs">
@@ -158,6 +164,7 @@ export default function ContentDetailPage() {
                   format={content.format}
                   platform={content.platform}
                   imageUrl={content.driveFile?.thumbnailLink}
+                  controls
                 />
               </div>
 

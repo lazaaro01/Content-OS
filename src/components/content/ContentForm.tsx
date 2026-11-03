@@ -11,6 +11,8 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { GoogleDrivePickerButton } from "@/components/content/GoogleDrivePickerButton";
+import { ContentThumbnail } from "@/components/content/ContentThumbnail";
+import { getMediaForFormat } from "@/lib/utils/media";
 import { useClientStore } from "@/store/client-store";
 import { useCampaignStore } from "@/store/campaign-store";
 import { mockUsers } from "@/data/mock-users";
@@ -209,18 +211,37 @@ export function ContentForm({ initial, onSubmit, onCancel, submitLabel = "Salvar
         rows={2}
       />
 
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <label className="text-xs font-medium text-muted-foreground">Mídia</label>
-        {driveFile ? (
-          <div className="flex items-center justify-between gap-3 rounded-sm border border-border bg-surface-elevated px-3 py-2">
-            <span className="truncate text-sm text-foreground">{driveFile.name}</span>
-            <Button type="button" variant="ghost" size="sm" onClick={() => setDriveFile(null)}>
-              Remover
-            </Button>
+        <div className="flex items-center gap-3 rounded-md border border-border bg-surface-elevated p-2.5">
+          <div className="w-16 shrink-0">
+            <ContentThumbnail
+              seed={initial?.thumbnailSeed ?? `preview-${format}`}
+              format={format}
+              platform={platform}
+              imageUrl={driveFile?.thumbnailLink}
+            />
           </div>
-        ) : (
-          <GoogleDrivePickerButton onSelect={setDriveFile} />
-        )}
+          <div className="flex min-w-0 flex-1 flex-col gap-1">
+            <span className="truncate text-xs font-medium text-foreground">
+              {driveFile ? driveFile.name : getMediaForFormat(format).label}
+            </span>
+            <span className="text-[11px] text-muted-foreground">
+              {driveFile
+                ? "Arquivo vinculado do Google Drive"
+                : `Selecionada automaticamente pelo formato (${FORMAT_LABELS[format]})`}
+            </span>
+            <div className="mt-1">
+              {driveFile ? (
+                <Button type="button" variant="ghost" size="sm" onClick={() => setDriveFile(null)}>
+                  Remover do Drive
+                </Button>
+              ) : (
+                <GoogleDrivePickerButton onSelect={setDriveFile} />
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">

@@ -94,6 +94,7 @@ export default function ReviewPage() {
                   format={content.format}
                   platform={content.platform}
                   imageUrl={content.driveFile?.thumbnailLink}
+                  controls
                 />
               </div>
 
